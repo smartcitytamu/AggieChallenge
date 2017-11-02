@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>SafeTM</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src={{url_for('static', filename='Map.js')}}></script>
+  <style>
+     #map{
+       height: 100vh;
+     }
+
+     #search{
+        position: absolute;
+        display: inline-block;
+        width: 300px;
+        height: 35px;
+        left: 40px;
+        top: 40px;
+     }
+
+     #search-button{
+        position: absolute;
+        display: inline-block;
+        height: 35px;
+        left: 340px;
+        top: 40px;
+     }
+
+     #toolbar{
+        position: absolute;
+        float: right;
+        right: 75px;
+        top: 40px;
+     }
+  </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<input id="search" class="form-control" placeholder="Tweets about..."> </input>
+<div id="search-button" class="btn btn-default absolute" onclick="search($('#search').val())">
+  <span id="search-glyph" class="glyphicon glyphicon-search"></span> Search
+</div>
+
+<div id="toolbar">
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active">
+      <a href="#tweet-display" aria-controls="profile" role="tab" data-toggle="tab">Tweets</a>
+    </li>
+    <li role="presentation">
+      <a href="#datasets" aria-controls="profile" role="tab" data-toggle="tab">Datasets</a>
+    </li>
+    <li role="presentation" data-toggle="tab">
+      <a href="#stats" aria-controls="profile" role="tab" data-toggle="tab">Stats</a>
+    </li>
+  </ul>
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="tweet-display"></div>
+    <div role="tabpanel" class="tab-pane" id="datasets"></div>
+    <div role="tabpanel" class="tab-pane" id="stats"></div>
+  </div>
+</div>
+
+<script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABEfKsMQUXfbJnfVJe_aOKo_CcIX6icv4&callback=initMap">
+</script>
+
+</body>
+</html>

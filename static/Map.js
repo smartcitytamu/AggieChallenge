@@ -113,14 +113,7 @@ function addTweet(tweet){
     if(tweet.text == null)
         tweet.text = "NO TEXT";
 
-    //create content string for displaying info about tweet
-    contentString = '<div id="content">'+
-             '<h3 id="firstHeading" class="firstHeading">' + tweet.user.name + '</h3>'+
-             'Followers: ' + tweet.user.followers_count +
-             '<div id="bodyContent">'+
-              tweet.text + '<br/>' +
-             '</div>'+
-             '</div>';
+   addTweetToList(tweet);
 
    marker = new google.maps.Marker({
     id: tweet.id,
@@ -136,10 +129,28 @@ function addTweet(tweet){
   });
 
   marker.addListener('click', function(e){
+    //scroll to tweet
+    $('#tweets-list').animate({
+       scrollTop: $('#tweets-list > #' + tweet.id).position().top - $('#tweets-list li:first').position().top
+    }, 'slow');
+
     this.infowindow.open(map, this);
   });
 
   points.push(marker);
+}
+
+function addTweetToList(tweet){
+    //create content string for displaying info about tweet
+    contentString = '<div id="content" style="width: 233px">'+
+             '<h3 id="firstHeading" class="firstHeading">' + tweet.user.name + '</h3>'+
+             'Followers: ' + tweet.user.followers_count +
+             '<div id="bodyContent">'+
+              tweet.text + '<br/>' +
+             '</div>'+
+             '</div>';
+
+    $('#tweets-list').append("<li id=" + tweet.id + " class='list-group-item'>" + contentString + "</li>")
 }
 
 function search(terms){

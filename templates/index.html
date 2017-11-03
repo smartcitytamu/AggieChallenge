@@ -37,6 +37,15 @@
         right: 75px;
         top: 40px;
      }
+
+     #toolbar > ul > li > a{
+        background-color: WhiteSmoke;
+     }
+
+     #tweets-list{
+        max-height: 500px;
+        overflow-y: scroll;
+     }
   </style>
 </head>
 <body>
@@ -56,14 +65,25 @@
     <li role="presentation">
       <a href="#datasets" aria-controls="profile" role="tab" data-toggle="tab">Datasets</a>
     </li>
-    <li role="presentation" data-toggle="tab">
+    <li role="presentation">
       <a href="#stats" aria-controls="profile" role="tab" data-toggle="tab">Stats</a>
     </li>
   </ul>
   <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="tweet-display"></div>
-    <div role="tabpanel" class="tab-pane" id="datasets"></div>
-    <div role="tabpanel" class="tab-pane" id="stats"></div>
+    <div role="tabpanel" class="tab-pane active" id="tweet-display">
+      <ul id="tweets-list" class="list-group">
+      </ul>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="datasets">
+      <ul class="list-group">
+        <li class="list-group-item"><a>Dataset1</a></li>
+        <li class="list-group-item"><a>Dataset2</a></li>
+        <li class="list-group-item"><a>Dataset3</a></li>
+      </ul>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="stats">
+      <div style="background-color: #FFFFFF; width: 233px; height: 150px"></div>
+    </div>
   </div>
 </div>
 

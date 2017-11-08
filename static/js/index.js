@@ -11,8 +11,7 @@ var config = {
 
 var words = ["wind", "reports", "storm", "mph", "job", "hurricane", "hurricaneirma", "fl", "i'm", "power", "miami", "florida", "irma"].map(function(word,value) {
     return {
-        word: word,
-        freq: value * 10
+        [word]: value * 10
     }
 })
 

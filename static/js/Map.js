@@ -54,7 +54,8 @@ function connectToTweet(){
    client.onreadystatechange = function() {
      if(client.readyState === XMLHttpRequest.DONE && client.status === 200) {
            console.log('connected');
-           setInterval(updateTweets(map.getBounds()), 1000);
+           //setInterval(updateTweets(map.getBounds()), 1000);
+           updateTweets(map.getBounds());
      }
    }
    client.send();
@@ -80,7 +81,7 @@ function updateTweets(){
    }
    client.send();
 
-   setTimeout(updateTweets(map.getBounds()), 2500);
+   //setTimeout(updateTweets(map.getBounds()), 2500);
 }
 
 // Convert Tweet json into Map Marker

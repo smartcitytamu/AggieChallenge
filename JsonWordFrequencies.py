@@ -1,24 +1,27 @@
-import sys
+#import sys
 import json
 from nltk.tokenize import word_tokenize
 import re
-import itertools
 import operator
 from nltk.corpus import stopwords
-import string
-import PIL
+
+
 
 #PUNCTUATION = list(string.punctuation)
 #STOP = (stopwords.words('english') + PUNCTUATION + ['rt', 'via'])
+'''
 stop = stopwords.words('english')
-newstop = []
+ newstop = []
 for each in stop:
-    try:
-        each = each.encode('utf-8')
-        newstop.append(each)
-    except:
-        continue
-stop  = newstop
+       try:
+            each = each.encode('utf-8')
+            newstop.append(each)
+        except:
+            continue
+    stop  = newstop
+    return stop
+    '''
+
 def load_tweets(filename):
 	tweets_file = open(filename)
 	tweets = []

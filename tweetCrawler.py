@@ -40,7 +40,6 @@ myStreamListener = MyStreamListener()
 myStream = tweepy.Stream(auth=api.auth, listener=MyStreamListener())
 
 def startListener(NElat, NElng, SWlat, SWlng):
-    connectMongo()
     print('Tweet Crawler connected to mongo')
     thread = Thread(target = updateListener, args = (NElat, NElng, SWlat, SWlng))
     thread.start()

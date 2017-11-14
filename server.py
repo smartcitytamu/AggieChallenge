@@ -18,7 +18,8 @@ def openTweetConnection():
     NElng = float(request.args.get('NElng'))
     SWlat = float(request.args.get('SWlat'))
     SWlng = float(request.args.get('SWlng'))
-    tweetCrawler.startListener(NElat, NElng, SWlat, SWlng)
+    tweetCrawler.connectMongo()
+    # tweetCrawler.startListener(NElat, NElng, SWlat, SWlng)
     connected = True
     latestTweetId = 0
     return 'Success'

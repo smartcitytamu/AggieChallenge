@@ -1,6 +1,4 @@
 var map;
-var user_location;
-
 var connect_id;
 var points = [];
 var run = true;
@@ -35,7 +33,6 @@ function initMap() {
             strokeColor: "Green"
           }
   ];
-  getUserLocation();
   connectToTweet();
 }
 
@@ -80,9 +77,6 @@ function updateTweets(){
             addTweet(tweet);
             console.log("Tweet: " + tweet);
          });
-         if!user_location != null){
-            user_location.setZIndex(google.maps.Marker.MAX_ZINDEX + 1);
-         }
      }
    }
    client.send();
@@ -199,43 +193,4 @@ function getBoundingBox(map){
                                               new google.maps.LatLng(map.center.lat()+0.2, map.center.lng()+0.2));
     }
     return bounds;
-}
-
-function getUserLocation(){
-   window.alert("User Location");
-   if (navigator.geolocation) {
-     navigator.geolocation.getCurrentPosition(function(position) {
-       var pos = {
-         lat: position.coords.latitude,
-         lng: position.coords.longitude
-       };
-
-       user_location = new google.maps.Marker({
-          position: pos,
-          map: map,
-          icon: { path: google.maps.SymbolPath.CIRCLE,
-                  scale: 5,
-                  fillColor: "Blue",
-                  fillOpacity: 0.6,
-                  strokeColor: "White",
-                  strokeWeight: 1,
-                }
-       });
-
-       map.setCenter(pos);
-     }, function() {
-       handleLocationError(true, infoWindow, map.getCenter());
-     });
-   } else {
-     // Browser doesn't support Geolocation
-     handleLocationError(false, infoWindow, map.getCenter());
-   }
-}
-
-function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-   infoWindow.setPosition(pos);
-   infoWindow.setContent(browserHasGeolocation ?
-                         'Error: The Geolocation service failed.' :
-                         'Error: Your browser doesn\'t support geolocation.');
-   infoWindow.open(map);
 }

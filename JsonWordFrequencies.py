@@ -10,11 +10,6 @@ import PIL
 
 #PUNCTUATION = list(string.punctuation)
 #STOP = (stopwords.words('english') + PUNCTUATION + ['rt', 'via'])
-'''for each in STOP:
-   each = each.encode('utf-8')
-    STOP.append(each)'''
-
-
 stop = stopwords.words('english')
 newstop = []
 for each in stop:
@@ -24,7 +19,6 @@ for each in stop:
     except:
         continue
 stop  = newstop
-
 def load_tweets(filename):
 	tweets_file = open(filename)
 	tweets = []
@@ -48,24 +42,28 @@ def clean_tweet(tweet):
     return cleaned_tweet
 
 tweets = load_tweets("C:\Users\Sriram\Desktop\Twitter\data1218.json")
-unique_words = {}
-for tweet in tweets:
-    try:
-        tweet = word_tokenize(tweet)
-        cleaned_tweet = clean_tweet(tweet)
-    except:
-        continue
-    for word in cleaned_tweet:
+def WordFrequencies():
+    unique_words = {}
+    for tweet in tweets:
         try:
-            if word in unique_words.keys():
-                unique_words[word] = unique_words[word] + 1
-            else:
-                unique_words[word] = 1;
-                unique_word
+            tweet = word_tokenize(tweet)
+            cleaned_tweet = clean_tweet(tweet)
         except:
             continue
-final_dict = sorted(unique_words.items(), key = operator.itemgetter(1), reverse = True)
-final_dict = final_dict[:40]
+        for word in cleaned_tweet:
+            try:
+                if word in unique_words.keys():
+                    unique_words[word] = unique_words[word] + 1
+                else:
+                    unique_words[word] = 1;
+
+            except:
+                continue
+        final_dict = sorted(unique_words.items(), key = operator.itemgetter(1), reverse = True)
+        final_dict = final_dict[:40]
+    return json.dumps(final_dict)
+'''
 import json
 with open("C:\Users\Sriram\Desktop\Twitter\pesult.json", 'w') as fp:
     json.dump((final_dict), fp)
+    '''

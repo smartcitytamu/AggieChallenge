@@ -68,4 +68,4 @@ final_dict = sorted(unique_words.items(), key = operator.itemgetter(1), reverse 
 final_dict = final_dict[:40]
 import json
 with open("C:\Users\Sriram\Desktop\Twitter\pesult.json", 'w') as fp:
-    json.dump(dict(final_dict), fp)
+    json.dump((final_dict), fp)

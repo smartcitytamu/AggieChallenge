@@ -58,5 +58,9 @@ def tweets():
 
     return json
 
+@app.route("/topTen.json")
+def topTen():
+    return
+
 if __name__ == "__main__":
     app.run()

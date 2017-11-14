@@ -5,6 +5,8 @@ from threading import Thread, Lock, Event, get_ident
 from twitter import Twitter, OAuth, TwitterHTTPError, TwitterStream
 from collections import OrderedDict
 
+cstat = ['30.622173', '-96.330113']
+
 # Variables that contains the user credentials to access Twitter API
 ACCESS_TOKEN = '905569300181897217-OLbHfunt8hjIQVMbvpOr3UJukjAuKip'
 ACCESS_SECRET = 'dUu95IEKOntDZDJAi1G7ySYPG1F0rv5B0ZTkDwDbZLTYv'
@@ -25,7 +27,7 @@ oauths = [OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET),OAut
 client = pymongo.MongoClient("mongodb://TAMU:aggie123@weatherdata-shard-00-00-vhgp9.mongodb.net:27017,weatherdata-shard-00-01-vhgp9.mongodb.net:27017,weatherdata-shard-00-02-vhgp9.mongodb.net:27017/test?ssl=true&replicaSet=WeatherData-shard-0&authSource=admin")
 db = client["WeatherData"]
 
-def getLocation(longbias,latbias):
+def getLocation(center,range,longbias,latbias):
     SELong = 0
     SELat = 0
     NWLong = 0
@@ -36,13 +38,13 @@ def getLocation(longbias,latbias):
 
     # locs = d['entries'][0]['nhc_center'].split(',')
 
-    locs = ['30.622173', '-96.330113']
+
 
     # Change these if you want to change the size of the 'box'
-    SELong = str(float(locs[0].strip()) - 0.5+longbias)
-    SELat = str(float(locs[1].strip()) - 0.5+latbias)
-    NWLong = str(float(locs[0].strip()) + 0.5+longbias)
-    NWLat = str(float(locs[1].strip()) + 0.5+latbias)
+    SELong = str(float(center[0].strip()) - range+longbias)
+    SELat = str(float(center[1].strip()) - range+latbias)
+    NWLong = str(float(center[0].strip()) + range+longbias)
+    NWLat = str(float(center[1].strip()) + range+latbias)
 
     return SELat + ',' + SELong + ',' + NWLat + ',' + NWLong
 
@@ -64,8 +66,9 @@ class MyThread(Thread):
             self.mutex.acquire()
             if tweet["id"] not in self.tweets:
                 self.tweets[tweet["id"]]=tweet
+                db.testTrial3.insert_one(tweet)
+            #print(str(get_ident()) + " " + str(len(self.tweets)) + " " + tweet["text"])
             self.mutex.release()
-            print(str(get_ident())+" "+str(len(self.tweets)) + " " + tweet["text"])
         pass
 
 #The thread function
@@ -134,7 +137,9 @@ class tweetCrawler:
 crawler=tweetCrawler(oauths)
 container=[]
 
-crawler.addCrawl(getLocation(0.0,0.0),None)
-crawler.addCrawl(getLocation(0.0,0.0),None)
+crawler.addCrawl(getLocation(cstat,0.5,0.0,0.0),None)
+crawler.addCrawl(getLocation(cstat,0.5,0.0,10.0),None)
+#crawler.addCrawl(None,myfilter)
+#crawler.addCrawl(None,myfilter2)
 #time.sleep(30)
-crawler.updateBox(getLocation(5.0,1.0),1)
+#crawler.updateBox(getLocation(cstat,0.5,5.0,1.0),1)

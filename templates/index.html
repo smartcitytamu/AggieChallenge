@@ -9,7 +9,6 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   <script src={{url_for('static', filename='js/Map.js')}}></script>
-  <script src={{url_for('static', filename='js/topTenWords.js')}}></script>
   <style>
      #map{
        height: 100vh;
@@ -103,6 +102,7 @@
     <div role="tabpanel" class="tab-pane" id="stats">
       <div style="background-color: #FFFFFF; width: 233px; height: 150px">
          <div class="btn btn-primary" onclick="displayTopTen()">Display Top Ten</div>
+        <div id="word-cloud" style="background-color: #FFFFFF; width: 233px; height: 150px"></div>
          <p id="top-ten"></p>
       </div>
 
@@ -113,6 +113,6 @@
 <script async defer
 src="https://maps.googleapis.com/maps/api/js?key=AIzaSyABEfKsMQUXfbJnfVJe_aOKo_CcIX6icv4&callback=initMap">
 </script>
-
+<script src={{url_for('static', filename='js/topTenWords.js')}}></script>
 </body>
 </html>

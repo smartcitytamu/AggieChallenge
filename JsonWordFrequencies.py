@@ -65,3 +65,4 @@ def WordFrequencies():
         final_dict = sorted(unique_words.items(), key = operator.itemgetter(1), reverse = True)
         final_dict = final_dict[:40]
     return json.dumps(final_dict)
+

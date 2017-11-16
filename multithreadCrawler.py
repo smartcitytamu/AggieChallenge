@@ -64,10 +64,11 @@ class MyThread(Thread):
             if self.exit.is_set():
                 break
             self.mutex.acquire()
-            if tweet["id"] not in self.tweets:
+            if "id" in tweet.keys() and tweet["id"] not in self.tweets:
                 self.tweets[tweet["id"]]=tweet
                 db.testTrial3.insert_one(tweet)
-            #print(str(get_ident()) + " " + str(len(self.tweets)) + " " + tweet["text"])
+                if "text" in tweet.keys():
+                    print(str(get_ident()) + " " + str(len(self.tweets)) + " " + tweet["text"])
             self.mutex.release()
         pass
 

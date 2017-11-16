@@ -15,14 +15,11 @@ global latestTweetId, connected
 myTweets=[]
 
 app = Flask(__name__)
-<<<<<<< HEAD
 app.config["CACHE_TYPE"] = "null"
 connected = False
 
-=======
 # connected = False
 my_session_manager = userSession.SessionManager()
->>>>>>> dc7f9df6a922614cd5337ee8b6842dddc88b7f61
 
 stop = stopwords.words('english')
 newstop = []
@@ -42,9 +39,9 @@ def find_session():
 
 @app.route("/")
 def index():
-    session_id = my_session_manager.create_session()
-    print(session_id)
-    return render_template("index.html")
+    my_session_id = my_session_manager.create_session()
+    print(my_session_id)
+    return render_template("index.html", session_id=my_session_id)
 
 """
 @app.route("/openTweetConnection.js")
@@ -72,10 +69,16 @@ def querybox():
     my_session = find_session()
 
     res = dumps(queryback)
-
     res2 = json.loads(res)
-    my_session.extend_tweets(res2)
-    return res
+    res3 = []
+    res3dict= {}
+    for i in range(len(res2)):
+        if 'id' in res2[i].keys() and res2[i]['id'] not in my_session.tweets:
+            res3.append(res2[i])
+            res3dict[res2[i]['id']]=res2[i]
+
+    my_session.extend_tweets(res3dict)
+    return json.dumps(res3)
 
 """
 @app.route("/tweets.json")
@@ -141,7 +144,7 @@ def WordFrequencies():
     unique_words = {}
 
     my_session = find_session()
-    tweetsx=load_tweets_from_list(my_session.tweets)
+    tweetsx=load_tweets_from_list(my_session.tweets.values())
 
     for tweet in tweetsx:
         tweet = word_tokenize(tweet)

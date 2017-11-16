@@ -46,7 +46,7 @@ class SessionManager:
             self.session_id = session_id
             self.bounding_box = []
             self.crawler_id = 0
-            self.tweets = []
+            self.tweets = {}
 
         def set_bounding_box(self, bounding_box):
             self.bounding_box = bounding_box
@@ -57,8 +57,7 @@ class SessionManager:
             self.crawler_id = 0
 
         def extend_tweets(self, tweets):
-            # self.tweets = {**self.tweets, **tweets}
-            self.tweets.extend(tweets)
+            self.tweets = {**self.tweets, **tweets}
 
         def close(self):
             # todo stub

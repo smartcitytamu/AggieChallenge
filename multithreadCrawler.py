@@ -101,16 +101,11 @@ class tweetCrawler:
         self.filters=[]
         pass
 
-<<<<<<< HEAD
-
     def addCrawl(self,box=None,filter=None,db=None):
-=======
     # creates and runs a new crawler
     # box is comma separated string with twitter form
     # filter is an array of words used to generate a twitter filter for those words
     # gives tweets that are in box OR pass filter
-    def addCrawl(self,box=None,filter=None):
->>>>>>> dc7f9df6a922614cd5337ee8b6842dddc88b7f61
         if (box!=None or filter!=None) and (len(self.threads)<len(self.oauths)):
             tempEvent=Event()
             self.crawlStop.append(tempEvent)

@@ -1,5 +1,7 @@
 var pepe = [["https", 473], ["the", 273], ["you", 134], ["and", 128], ["for", 125], ["this", 109], ["irma", 85], ["n't", 71], ["that", 63], ["florida", 59], ["just", 58], ["hurricaneirma", 58], ["are", 56], ["out", 51], ["but", 50], ["power", 49], ["with", 49], ["have", 47], ["miami", 46], ["now", 44], ["hurricane", 44], ["not", 39], ["was", 38], ["amp", 38], ["good", 36], ["what", 36], ["our", 36], ["all", 35], ["from", 35], ["job", 35], ["can", 34], ["mph", 32], ["first", 31], ["football", 31], ["like", 29], ["hiring", 28], ["they", 27], ["about", 27], ["want", 26], ["storm", 26]];
 function CreateWordCloud(dataSet){
+
+jQuery('#word-cloud div').html('')
 var config = {
     trace: false,
     spiralResolution: 1, //Lower = better resolution
@@ -10,21 +12,22 @@ var config = {
     font: "sans-serif"
 }
 
-var words = dataSet.map(function(word,value) {
+var words = dataSet.map(function([word,value]) {
+    console.log(value)
     return {
         word: word,
-        freq: value
+        freq: value*4
     }
 })
 
-words.sort(function(a, b) {
+/*words.sort(function(a, b) {
     return -1 * (a.freq - b.freq);
-});
+});*/
 
 var cloud = document.getElementById("word-cloud");
 console.log(cloud)
-//cloud.style.position = "relative";
-//cloud.style.fontFamily = config.font;
+cloud.style.position = "relative";
+cloud.style.fontFamily = config.font;
 
 var traceCanvas;
 var traceCanvasCtx;

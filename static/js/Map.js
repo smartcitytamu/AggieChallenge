@@ -80,7 +80,7 @@ function updateTweets(){
             addTweet(tweet);
             console.log("Tweet: " + tweet);
          });
-         if!user_location != null){
+         if(!user_location != null){
             user_location.setZIndex(google.maps.Marker.MAX_ZINDEX + 1);
          }
      }

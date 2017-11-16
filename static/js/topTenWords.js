@@ -1,7 +1,7 @@
 function displayTopTen(){
     var request = $.ajax({
         method: 'GET',
-        url: '0.0.0.0:5000/topTen.json', //todo change url
+        url: '../WordFrequency.json', //todo change url
         dataType: 'json'
     });
 

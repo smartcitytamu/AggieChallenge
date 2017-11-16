@@ -16,7 +16,7 @@ def querybox(box):
     queryback=db.testTrial3.find({'coordinates': {"$geoWithin": { "$box": box }}})
 
     res=dumps(queryback)
-    #res=json.loads(res)
+    res=json.loads(res)
     return res
 
 def queryfilter(keyword):

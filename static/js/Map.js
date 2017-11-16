@@ -8,6 +8,9 @@ var run = true;
 var bounds;
 var icons;
 
+function getSessionId(){
+    return $('#session-id').attr('content')
+}
 
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
@@ -50,18 +53,19 @@ function connectToTweet(){
    SWlat = bounds.getSouthWest().lat();
    SWlng = bounds.getSouthWest().lng();
 
-   open_url = '../openTweetConnection.js?'+'NElat='+NElat+'&NElng='+NElng+'&SWlat='+SWlat+'&SWlng='+SWlng;
-   client.open('GET', open_url);
-   client.responseType = "json";
-
-   client.onreadystatechange = function() {
-     if(client.readyState === XMLHttpRequest.DONE && client.status === 200) {
-           console.log('connected');
-           //setInterval(updateTweets(map.getBounds()), 1000);
-           updateTweets(map.getBounds());
-     }
-   }
-   client.send();
+   updateTweets(map.getBounds());
+//   open_url = '../openTweetConnection.js?'+'NElat='+NElat+'&NElng='+NElng+'&SWlat='+SWlat+'&SWlng='+SWlng;
+//   client.open('GET', open_url);
+//   client.responseType = "json";
+//
+//   client.onreadystatechange = function() {
+//     if(client.readyState === XMLHttpRequest.DONE && client.status === 200) {
+//           console.log('connected');
+//           //setInterval(updateTweets(map.getBounds()), 1000);
+//           updateTweets(map.getBounds());
+//     }
+//   }
+//   client.send();
 }
 
 function updateLoop(){
@@ -69,6 +73,8 @@ function updateLoop(){
 }
 
 function updateTweets(){
+   //update bounding box
+   bounds = getBoundingBox(map);
 
    NElat = bounds.getNorthEast().lat();
    NElng = bounds.getNorthEast().lng();
@@ -78,7 +84,7 @@ function updateTweets(){
    var client = new XMLHttpRequest();
 
    //tweets_url = '../tweets.json';
-   tweets_url = '../querybox.json?'+'NElat='+NElat+'&NElng='+NElng+'&SWlat='+SWlat+'&SWlng='+SWlng;
+   tweets_url = '../querybox.json?'+'NElat='+NElat+'&NElng='+NElng+'&SWlat='+SWlat+'&SWlng='+SWlng+'&sessionId='+getSessionId();
    client.open('GET', tweets_url);
    client.responseType = "json";
 
@@ -94,6 +100,7 @@ function updateTweets(){
          if(!user_location != null){
             user_location.setZIndex(google.maps.Marker.MAX_ZINDEX + 1);
          }
+         updateTweets();
      }
    }
    client.send();

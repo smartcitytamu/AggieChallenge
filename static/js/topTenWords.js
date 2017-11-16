@@ -161,11 +161,14 @@ function intersect(word, x, y) {
 })();
 }
 
+function getSessionId(){
+    return $('#session-id').attr('content')
+}
 
 function displayTopTen(){
     var request = $.ajax({
         method: 'GET',
-        url: '../WordFrequency.json', //todo change url
+        url: '../WordFrequency.json?sessionId=' + getSessionId(),
         dataType: 'json'
     });
 

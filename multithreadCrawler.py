@@ -29,6 +29,7 @@ db = client["WeatherData"]
 streamDB=db.testTrial3
 mentionDB=db.testTrial4
 
+
 def getLocation(center,range,longbias,latbias):
     SELong = 0
     SELat = 0
@@ -62,6 +63,7 @@ class MyThread(Thread):
         self.tweets=tweets
         self.db=db
 
+    # todo switch to producer consumer model for uploading
     def run(self):
         for tweet in self.crawler:
             if self.exit.is_set():
@@ -99,8 +101,16 @@ class tweetCrawler:
         self.filters=[]
         pass
 
+<<<<<<< HEAD
 
     def addCrawl(self,box=None,filter=None,db=None):
+=======
+    # creates and runs a new crawler
+    # box is comma separated string with twitter form
+    # filter is an array of words used to generate a twitter filter for those words
+    # gives tweets that are in box OR pass filter
+    def addCrawl(self,box=None,filter=None):
+>>>>>>> dc7f9df6a922614cd5337ee8b6842dddc88b7f61
         if (box!=None or filter!=None) and (len(self.threads)<len(self.oauths)):
             tempEvent=Event()
             self.crawlStop.append(tempEvent)
@@ -118,9 +128,12 @@ class tweetCrawler:
             self.oauths.append(tempOauth)
         pass
 
+    # stops the i-th crawler
     def stopCrawl(self,i):
         self.crawlStop[i].set()
 
+    # updates the box of i-th crawler
+    # box is comma separated string with twitter form
     def updateBox(self, box,i):
         #for i in range(len(self.threads)):
         self.stopCrawl(i)

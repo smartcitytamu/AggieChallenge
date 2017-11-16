@@ -44,7 +44,7 @@ def clean_tweet(tweet):
 
     return cleaned_tweet
 
-#tweets = load_tweets("C:\Users\Sriram\Desktop\Twitter\data1218.json")
+# tweets = load_tweets("Users\Sriram\Desktop\Twitter\data1218.json")
 def WordFrequencies():
     unique_words = {}
     for tweet in tweets:

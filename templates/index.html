@@ -14,7 +14,7 @@
        height: 100vh;
      }
 
-     #search{
+     #search-box{
         position: absolute;
         display: inline-block;
         width: 300px;
@@ -23,12 +23,16 @@
         top: 40px;
      }
 
+     #search{
+        display: inline;
+     }
+
      #search-button{
-        position: absolute;
+        display: inline;
+     }
+
+     #common-terms{
         display: inline-block;
-        height: 35px;
-        left: 340px;
-        top: 40px;
      }
 
      #toolbar{
@@ -46,15 +50,34 @@
         max-height: 500px;
         overflow-y: scroll;
      }
+
+     #session-id{
+        display: none;
+     }
   </style>
 </head>
 <body>
+<div id="session-id" content="{{session_id}}"></div>
 
 <div id="map"></div>
 
+<div id="search-box">
 <input id="search" class="form-control" placeholder="Tweets about..."> </input>
 <div id="search-button" class="btn btn-default absolute" onclick="search($('#search').val())">
   <span id="search-glyph" class="glyphicon glyphicon-search"></span> Search
+</div>
+<br/>
+<select id="common-terms" class="selectpicker" multiple>
+  <option>weather</option>
+  <option>warning</option>
+  <option>hurricane</option>
+  <option>emergency</option>
+  <option>problem</option>
+  <option>evacuated</option>
+  <option>electricity</option>
+  <option>traffic</option>
+  <option>first responders</option>
+</select>
 </div>
 
 <div id="toolbar">

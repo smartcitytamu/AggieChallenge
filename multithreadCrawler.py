@@ -27,6 +27,7 @@ oauths = [OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET),OAut
 client = pymongo.MongoClient("mongodb://TAMU:aggie123@weatherdata-shard-00-00-vhgp9.mongodb.net:27017,weatherdata-shard-00-01-vhgp9.mongodb.net:27017,weatherdata-shard-00-02-vhgp9.mongodb.net:27017/test?ssl=true&replicaSet=WeatherData-shard-0&authSource=admin")
 db = client["WeatherData"]
 
+
 def getLocation(center,range,longbias,latbias):
     SELong = 0
     SELat = 0
@@ -59,6 +60,7 @@ class MyThread(Thread):
         self.mutex=mutex
         self.tweets=tweets
 
+    # todo switch to producer consumer model for uploading
     def run(self):
         for tweet in self.crawler:
             if self.exit.is_set():
@@ -96,7 +98,10 @@ class tweetCrawler:
         self.filters=[]
         pass
 
-
+    # creates and runs a new crawler
+    # box is comma separated string with twitter form
+    # filter is an array of words used to generate a twitter filter for those words
+    # gives tweets that are in box OR pass filter
     def addCrawl(self,box=None,filter=None):
         if (box!=None or filter!=None) and (len(self.threads)<len(self.oauths)):
             tempEvent=Event()
@@ -115,9 +120,12 @@ class tweetCrawler:
             self.oauths.append(tempOauth)
         pass
 
+    # stops the i-th crawler
     def stopCrawl(self,i):
         self.crawlStop[i].set()
 
+    # updates the box of i-th crawler
+    # box is comma separated string with twitter form
     def updateBox(self, box,i):
         #for i in range(len(self.threads)):
         self.stopCrawl(i)

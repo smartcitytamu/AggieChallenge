@@ -8,14 +8,15 @@ import operator
 from nltk.corpus import stopwords
 import JsonWordFrequencies
 import pymongo
+import userSession
 
 global latestTweetId, connected
 
 myTweets=[]
 
 app = Flask(__name__)
-connected = False
-
+# connected = False
+my_session_manager = userSession.SessionManager()
 
 stop = stopwords.words('english')
 newstop = []
@@ -29,10 +30,17 @@ stop = newstop
 client = pymongo.MongoClient("mongodb://TAMU:aggie123@weatherdata-shard-00-00-vhgp9.mongodb.net:27017,weatherdata-shard-00-01-vhgp9.mongodb.net:27017,weatherdata-shard-00-02-vhgp9.mongodb.net:27017/test?ssl=true&replicaSet=WeatherData-shard-0&authSource=admin")
 db = client["WeatherData"]
 
+def find_session():
+    return my_session_manager.get_session(request.args.get('sessionId'))
+
+
 @app.route("/")
 def index():
+    session_id = my_session_manager.create_session()
+    print(session_id)
     return render_template("index.html")
 
+"""
 @app.route("/openTweetConnection.js")
 def openTweetConnection():
     global latestTweetId, connected
@@ -45,17 +53,6 @@ def openTweetConnection():
     connected = True
     latestTweetId = 0
     return 'Success'
-
-"""
-@app.route("/updateTweetConnection.js")
-def updateTweetConnection():
-    global latestTweetId, connected
-    NElat = float(request.args.get('NElat'))
-    NElng = float(request.args.get('NElng'))
-    SWlat = float(request.args.get('SWlat'))
-    SWlng = float(request.args.get('SWlng'))
-    tweetStream.updateListener(NElat, NElng, SWlat, SWlng)
-    return 'Success'
 """
 
 @app.route("/querybox.json")
@@ -66,12 +63,15 @@ def querybox():
     SWlng = float(request.args.get('SWlng'))
     queryback = db.testTrial3.find({'coordinates': {"$geoWithin": {"$box": [[SWlng,SWlat],[NElng,NElat]]}}})
 
+    my_session = find_session()
+
     res = dumps(queryback)
 
     res2 = json.loads(res)
-    myTweets.extend(res2)
+    my_session.extend_tweets(res2)
     return res
 
+"""
 @app.route("/tweets.json")
 def tweets():
     global latestTweetId, connected
@@ -93,6 +93,7 @@ def tweets():
             print(latestTweetId)
 
     return json
+"""
 
 def load_tweets(filename):
     tweets_file = open(filename,'r')
@@ -133,7 +134,8 @@ def WordFrequencies():
     print("wordfreq")
     unique_words = {}
 
-    tweetsx=load_tweets_from_list(myTweets)
+    my_session = find_session()
+    tweetsx=load_tweets_from_list(my_session.tweets)
 
     for tweet in tweetsx:
         tweet = word_tokenize(tweet)

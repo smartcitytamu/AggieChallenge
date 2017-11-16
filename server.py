@@ -14,6 +14,7 @@ global latestTweetId, connected
 myTweets=[]
 
 app = Flask(__name__)
+app.config["CACHE_TYPE"] = "null"
 connected = False
 
 
@@ -148,7 +149,7 @@ def WordFrequencies():
             except:
                 continue
     final_dictx = sorted(unique_words.items(), key = operator.itemgetter(1), reverse = True)
-    final_dictx = final_dictx[:40]
+    final_dictx = final_dictx[:10]
     print(final_dictx)
     return json.dumps(final_dictx)
 

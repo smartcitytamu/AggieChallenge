@@ -20,8 +20,9 @@ def querybox(box):
     return res
 
 def queryfilter(keyword):
-
-    pass
+    queryback=db.testTrail3.find({'text':'/.*'+keyword+'.*/'})
+    res=dumps(queryback)
+    return res
 
 input=[[-82.30241655278206, 28.24823404323392 ], [-80.30241655278206,29.24823404323392]]
 querybox(input)

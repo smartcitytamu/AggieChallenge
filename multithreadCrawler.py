@@ -26,6 +26,8 @@ oauths = [OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET),OAut
 
 client = pymongo.MongoClient("mongodb://TAMU:aggie123@weatherdata-shard-00-00-vhgp9.mongodb.net:27017,weatherdata-shard-00-01-vhgp9.mongodb.net:27017,weatherdata-shard-00-02-vhgp9.mongodb.net:27017/test?ssl=true&replicaSet=WeatherData-shard-0&authSource=admin")
 db = client["WeatherData"]
+streamDB=db.testTrial3
+mentionDB=db.testTrial4
 
 def getLocation(center,range,longbias,latbias):
     SELong = 0
@@ -50,7 +52,7 @@ def getLocation(center,range,longbias,latbias):
 
 #The thread class
 class MyThread(Thread):
-    def __init__(self, crawler, exitEvent,tweets,mutex):
+    def __init__(self, crawler, exitEvent,tweets,mutex,db):
         ''' Constructor. '''
 
         Thread.__init__(self)
@@ -58,6 +60,7 @@ class MyThread(Thread):
         self.exit=exitEvent
         self.mutex=mutex
         self.tweets=tweets
+        self.db=db
 
     def run(self):
         for tweet in self.crawler:
@@ -66,9 +69,9 @@ class MyThread(Thread):
             self.mutex.acquire()
             if "id" in tweet.keys() and tweet["id"] not in self.tweets:
                 self.tweets[tweet["id"]]=tweet
-                db.testTrial3.insert_one(tweet)
-                if "text" in tweet.keys():
-                    print(str(get_ident()) + " " + str(len(self.tweets)) + " " + tweet["text"])
+                self.db.insert_one(tweet)
+                #if "text" in tweet.keys():
+                #    print(str(get_ident()) + " " + str(len(self.tweets)) + " " + tweet["text"])
             self.mutex.release()
         pass
 
@@ -97,7 +100,7 @@ class tweetCrawler:
         pass
 
 
-    def addCrawl(self,box=None,filter=None):
+    def addCrawl(self,box=None,filter=None,db=None):
         if (box!=None or filter!=None) and (len(self.threads)<len(self.oauths)):
             tempEvent=Event()
             self.crawlStop.append(tempEvent)
@@ -110,7 +113,7 @@ class tweetCrawler:
                 tempCrawler = TwitterStream(auth=tempOauth).statuses.filter(locations=box)
             elif filter!=None and box!=None:
                 tempCrawler = TwitterStream(auth=tempOauth).statuses.filter(locations=box, track=",".join(filter))
-            self.threads.append(MyThread(tempCrawler,tempEvent,self.tweets,self.mutex))
+            self.threads.append(MyThread(tempCrawler,tempEvent,self.tweets,self.mutex,db))
             self.threads[len(self.threads)-1].start()
             self.oauths.append(tempOauth)
         pass
@@ -122,7 +125,7 @@ class tweetCrawler:
         #for i in range(len(self.threads)):
         self.stopCrawl(i)
         self.crawlStop[i].clear()
-        self.addCrawl(box,self.filters[i])
+        self.addCrawl(box,self.filters[i],streamDB)
         pass
 
     def readTweets(self,container):
@@ -138,8 +141,10 @@ class tweetCrawler:
 crawler=tweetCrawler(oauths)
 container=[]
 
-crawler.addCrawl(getLocation(cstat,0.5,0.0,0.0),None)
-crawler.addCrawl(getLocation(cstat,0.5,0.0,10.0),None)
+crawler.addCrawl(getLocation(cstat,0.5,0.0,0.0),None,streamDB)
+#crawler.addCrawl(getLocation(cstat,0.5,0.0,10.0),None,streamDB)
+crawler.addCrawl(None,["@smartcitytamu"],mentionDB)
+
 #crawler.addCrawl(None,myfilter)
 #crawler.addCrawl(None,myfilter2)
 #time.sleep(30)

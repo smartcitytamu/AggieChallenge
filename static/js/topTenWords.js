@@ -26,11 +26,8 @@ console.log(cloud)
 //cloud.style.position = "relative";
 //cloud.style.fontFamily = config.font;
 
-var traceCanvas = document.createElement("canvas");
-traceCanvas.width = cloud.offsetWidth;
-traceCanvas.height = cloud.offsetHeight;
-var traceCanvasCtx = traceCanvas.getContext("2d");
-cloud.appendChild(traceCanvas);
+var traceCanvas;
+var traceCanvasCtx;
 
 var startPoint = {
     x: cloud.offsetWidth / 2,
@@ -38,6 +35,14 @@ var startPoint = {
 };
 
 var wordsDown = [];
+
+function setupCanvas(){
+    traceCanvas = document.createElement("canvas");
+    traceCanvas.width = cloud.offsetWidth;
+    traceCanvas.height = cloud.offsetHeight;
+    traceCanvasCtx = traceCanvas.getContext("2d");
+    cloud.appendChild(traceCanvas);
+}
 /* ======================= END SETUP ======================= */
 
 
@@ -47,7 +52,7 @@ var wordsDown = [];
 /* =======================  PLACEMENT FUNCTIONS =======================  */
 function createWordObject(word, freq) {
     var wordContainer = document.createElement("div");
-    wordContainer.style.position = "absolute";
+    wordContainer.style.position = "relative";
     wordContainer.style.fontSize = freq + "px";
     wordContainer.style.lineHeight = config.lineHeight;
 /*    wordContainer.style.transform = "translateX(-50%) translateY(-50%)";*/

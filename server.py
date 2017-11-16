@@ -7,8 +7,11 @@ import re
 import operator
 from nltk.corpus import stopwords
 import JsonWordFrequencies
+import pymongo
 
 global latestTweetId, connected
+
+myTweets=[]
 
 app = Flask(__name__)
 connected = False
@@ -23,6 +26,8 @@ for each in stop:
         continue
 stop = newstop
 
+client = pymongo.MongoClient("mongodb://TAMU:aggie123@weatherdata-shard-00-00-vhgp9.mongodb.net:27017,weatherdata-shard-00-01-vhgp9.mongodb.net:27017,weatherdata-shard-00-02-vhgp9.mongodb.net:27017/test?ssl=true&replicaSet=WeatherData-shard-0&authSource=admin")
+db = client["WeatherData"]
 
 @app.route("/")
 def index():
@@ -52,6 +57,20 @@ def updateTweetConnection():
     tweetStream.updateListener(NElat, NElng, SWlat, SWlng)
     return 'Success'
 """
+
+@app.route("/querybox.json")
+def querybox():
+    NElat = float(request.args.get('NElat'))
+    NElng = float(request.args.get('NElng'))
+    SWlat = float(request.args.get('SWlat'))
+    SWlng = float(request.args.get('SWlng'))
+    queryback = db.testTrial3.find({'coordinates': {"$geoWithin": {"$box": [[SWlng,SWlat],[NElng,NElat]]}}})
+
+    res = dumps(queryback)
+
+    res2 = json.loads(res)
+    myTweets.extend(res2)
+    return res
 
 @app.route("/tweets.json")
 def tweets():
@@ -85,6 +104,15 @@ def load_tweets(filename):
             tweets.append(text)
     return tweets
 
+
+def load_tweets_from_list(input):
+    tweets = []
+    for tweet in input:
+        if "text" in tweet.keys():
+            text = tweet["text"]
+            tweets.append(text)
+    return tweets
+
 def clean_tweet(tweet):
     cleaned = []
     for word in tweet:
@@ -98,12 +126,14 @@ def clean_tweet(tweet):
 
     return cleaned
 
-tweetsx=load_tweets("static/data1218.json")
-print(tweetsx)
+#tweetsx=load_tweets("static/data1218.json")
+#print(tweetsx)
 @app.route("/WordFrequency.json")
 def WordFrequencies():
     print("wordfreq")
     unique_words = {}
+
+    tweetsx=load_tweets_from_list(myTweets)
 
     for tweet in tweetsx:
         tweet = word_tokenize(tweet)

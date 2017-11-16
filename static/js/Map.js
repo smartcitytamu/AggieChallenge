@@ -64,10 +64,21 @@ function connectToTweet(){
    client.send();
 }
 
+function updateLoop(){
+
+}
+
 function updateTweets(){
+
+   NElat = bounds.getNorthEast().lat();
+   NElng = bounds.getNorthEast().lng();
+   SWlat = bounds.getSouthWest().lat();
+   SWlng = bounds.getSouthWest().lng();
+
    var client = new XMLHttpRequest();
 
-   tweets_url = '../tweets.json';
+   //tweets_url = '../tweets.json';
+   tweets_url = '../querybox.json?'+'NElat='+NElat+'&NElng='+NElng+'&SWlat='+SWlat+'&SWlng='+SWlng;
    client.open('GET', tweets_url);
    client.responseType = "json";
 

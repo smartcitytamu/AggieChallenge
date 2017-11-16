@@ -10,7 +10,7 @@ var config = {
     font: "sans-serif"
 }
 
-var words = pepe.map(function(word,value) {
+var words = dataSet.map(function(word,value) {
     return {
         word: word,
         freq: value
@@ -156,7 +156,7 @@ function intersect(word, x, y) {
 })();
 }
 
-CreateWordCloud(pepe);
+
 function displayTopTen(){
     var request = $.ajax({
         method: 'GET',
@@ -168,6 +168,7 @@ function displayTopTen(){
 
 
         console.log(json)  //todo
+        CreateWordCloud(json);
     });
 
     request.fail(function( jqXHR, textStatus ) {

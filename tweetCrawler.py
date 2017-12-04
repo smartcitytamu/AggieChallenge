@@ -7,10 +7,10 @@ from threading import Thread
 global tweets
 
 # Twitter connection
-consumer_key = 'CaWuX5AD3IYqWAVAVi4dwY2ra'
-consumer_secret = 'BC2ZpQd4bkBAYun5DR2qxUYtKqijXjVVEzn3ElXw9QU3CMPuVb'
-access_token = '4839087855-bDPiFAbK3fViPSg6JaTt5w1GFSAxyO2bT81kcOt'
-access_token_secret = 'qqTxlQZldRheCc05H4eoxZwMBTbm3TNUwYgkrekw9okUf'
+ACCESS_TOKEN = os.environ['Twitter_ACCESS_TOKEN']
+ACCESS_SECRET = os.environ['Twitter_ACCESS_SECRET']
+CONSUMER_KEY = os.environ['Twitter_CONSUMER_KEY']
+CONSUMER_SECRET = os.environ['Twitter_CONSUMER_SECRET']
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
@@ -20,9 +20,7 @@ def connectMongo():
     global tweets
     # pymongo connection
     client = pymongo.MongoClient(
-        "mongodb://HackTX:hacktxalluppercase@cluster0-shard-00-00-f137z.mongodb.net:27017," +
-        "cluster0-shard-00-01-f137z.mongodb.net:27017,cluster0-shard-00-02-f137z.mongodb.net:27017" +
-        "/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin",
+        os.environ['MONGODB_ENDPOINT'],
         ssl=True,
         ssl_cert_reqs=ssl.CERT_NONE)
 

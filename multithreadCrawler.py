@@ -8,15 +8,11 @@ from collections import OrderedDict
 cstat = ['30.622173', '-96.330113']
 
 # Variables that contains the user credentials to access Twitter API
-ACCESS_TOKEN = '905569300181897217-OLbHfunt8hjIQVMbvpOr3UJukjAuKip'
-ACCESS_SECRET = 'dUu95IEKOntDZDJAi1G7ySYPG1F0rv5B0ZTkDwDbZLTYv'
-CONSUMER_KEY = 'K3lNkaZT6VDCWbNRreIrSWP16'
-CONSUMER_SECRET = 'UwI07Qrrjv0ZYeL670a7qWY7PGDfW4QuxfK7kiJggDbwE5sHi1'
+ACCESS_TOKEN = os.environ['Twitter_ACCESS_TOKEN']
+ACCESS_SECRET = os.environ['Twitter_ACCESS_SECRET']
+CONSUMER_KEY = os.environ['Twitter_CONSUMER_KEY']
+CONSUMER_SECRET = os.environ['Twitter_CONSUMER_SECRET']
 
-ACCESS_TOKEN2="926230327101665281-rshloZylCnEsO0wV8y2wIQnPPsrOY3D"
-ACCESS_SECRET2="cLJyxC10fCg5qhFqFvWRy8pPSvLNJHb466WCBSpmDVclN"
-CONSUMER_KEY2="B0K119FNzQHuGQjZt1L7JhLIA"
-CONSUMER_SECRET2="VTJMZ8m5DACLAUnkwHoQA541fglzJQ0WLQW3tlFk6LlzvSsPln"
 
 myfilter=["hurricane","harvey"]
 myfilter2=["football"]
@@ -24,7 +20,7 @@ myfilter2=["football"]
 
 oauths = [OAuth(ACCESS_TOKEN, ACCESS_SECRET, CONSUMER_KEY, CONSUMER_SECRET),OAuth(ACCESS_TOKEN2, ACCESS_SECRET2, CONSUMER_KEY2, CONSUMER_SECRET2)]
 
-client = pymongo.MongoClient("mongodb://TAMU:aggie123@weatherdata-shard-00-00-vhgp9.mongodb.net:27017,weatherdata-shard-00-01-vhgp9.mongodb.net:27017,weatherdata-shard-00-02-vhgp9.mongodb.net:27017/test?ssl=true&replicaSet=WeatherData-shard-0&authSource=admin")
+client = pymongo.MongoClient(os.environ['MONGODB_ENDPOINT'])
 db = client["WeatherData"]
 streamDB=db.testTrial3
 mentionDB=db.testTrial4
